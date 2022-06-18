@@ -12,10 +12,23 @@ def user_interface(num):
 
 def create_file_input(bool):
     if not bool:
-        user = input("\n[0] Exit\n[1] Go Back\n[Enter] Create Here\n\nENTER PATH HERE: ")
+        user = input("\n[0] Exit\n[1] Go Back\n[Enter] Create Here\n\nEnter path here: ")
     elif bool:
-        user = input("\n[0] Exit\n[Enter] Create Here\n\nENTER PATH HERE: ")
+        user = input("\n[0] Exit\n[Enter] Create Here\n\nEnter path here: ")
 
+    return user
+
+def move_interface():
+
+    user = input('\n[0] Exit\n[1] Choose Files in Current Directory\n[2] Change Directory\n[3] Move Files\nENTER HERE: ')
+
+    return int(user)
+
+def move_change_dir(bool): 
+    if not bool:
+        user = input("\n[0] Exit\n[1] Go Back\n\n\nEnter path here: ")
+    elif bool:
+        user = input("\n[0] Exit\n\nEnter path here: ")
     return user
 
 
@@ -40,7 +53,8 @@ class directory:
         self.path = os.getcwd() # sets a parent directory 
 
 
-    def list_directory(self):
+
+    def list_directory(self,onlyfolders): # function to decorate! 
 
         path_list = []
 
@@ -54,15 +68,20 @@ class directory:
             path = os.getcwd() + '\\' + _  # directory
 
             
-            if os.path.isdir(path): # check if file
+            if onlyfolders:
                 
-                path_list.append(_) 
+                if os.path.isdir(path): # check if file
+                
+                    path_list.append(_) 
+                else:
+                    continue
+
+            else:
+
+                path_list.append(_)  
+
+        for element in path_list: print('\n' + element)
         
-        ' '.join(_ for _ in path_list[0:len(path_list)//2])
-
-        ' '.join(_ for _ in path_list[len(path_list)//2:len(path_list)+1])
-
-        print(path_list)
 
         return path_list
 
