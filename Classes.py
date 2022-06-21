@@ -44,6 +44,7 @@ def move_change_dir(bool):
         
     if a user input a name that is a file, print('not a folder!') '''
 
+
 class directory: 
 
     os.chdir('C:\\Users\\ASUS') # home directory 
@@ -54,26 +55,13 @@ class directory:
 
         self.max_index = 5
         self.min_index = 0
+        self.path_list = []
 
-    def element_scroller(self,user_input,in_home,path_list): # element displayer and scroller
-        
-        
-        if user_input.upper() == 'B':
+    def element_scroller(self,user_input): # element displayer and scroller
+    
 
-            if in_home:
-                print("\nAlready in home directory!")
-                return self.max_index,self.min_index
 
-            elif not in_home:
-                os.chdir('..')
-                print('\nMoved back a directory!')
-
-                self.self.max_index_index = 5
-                self.min_index = 0  
-
-                return self.max_index,self.min_index
-
-        elif user_input.upper() == 'N':
+        if user_input.upper() == 'N':
 
             self.max_index += 5
             self.min_index += 5
@@ -99,7 +87,7 @@ class directory:
 
                 user_input = input('\nEnter path name here: ')
 
-                if user_input in path_list: # change directory
+                if user_input in self.path_list: # change directory
 
                     
                     os.chdir(os.getcwd() + '\\' + user_input) # moves to a new directory (from user input)
@@ -119,9 +107,7 @@ class directory:
 
 
     def list_directory(self,onlyfolders): # function to decorate! 
-
-        path_list = []
-
+        self.path_list = []
         def listdir_nohidden(path): # removes hidden folders 
             for f in os.listdir(path):
                 if not f.startswith('.'):
@@ -136,33 +122,33 @@ class directory:
                 
                 if os.path.isdir(path): # check if file
                 
-                    path_list.append(_) 
+                    self.path_list.append(_) 
                 else:
                     continue
 
             else:
 
-                path_list.append(_)  
+                self.path_list.append(_)  
 
     
-        return path_list
 
 
 
 
-    def element_displayer(self,path_list):
-        if len(path_list) <= 5:
+    def element_displayer(self):
 
-            for element in path_list[::]: print('\n' + element)
+        if len(self.path_list) <= 5:
+
+            for element in self.path_list[::]: print('\n' + element)
 
         else:
 
-            if len(path_list[self.min_index:self.max_index]) == 0: 
+            if len(self.path_list[self.min_index:self.max_index]) == 0: 
                 print('\nNo more items! ')
                 self.max_index -= 5
                 self.min_index -= 5     
 
-            for element in path_list[self.min_index:self.max_index]: print('\n' + element)
+            for element in self.path_list[self.min_index:self.max_index]: print('\n' + element)
 
 
 
