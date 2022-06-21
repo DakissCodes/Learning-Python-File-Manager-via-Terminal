@@ -12,9 +12,9 @@ def user_interface(num):
 
 def create_file_input(bool):
     if not bool:
-        user = input("\n[0] Exit\n[1] Go Back\n[Enter] Create Here\n\nEnter path here: ")
+        user = input("\n[0] Exit\n[B] Go Back a Directory\n[N] Next Page\n[P] Previous Page\n[C] Change Path\n[Enter] Create Here\n\nENTER HERE: ")
     elif bool:
-        user = input("\n[0] Exit\n[Enter] Create Here\n\nEnter path here: ")
+        user = input("\n[0] Exit\n[N] Next Page\n[P] Previous Page\n[C] Change Path\n[Enter] Create Here\n\nENTER HERE: ")
 
     return user
 
@@ -80,11 +80,58 @@ class directory:
 
                 path_list.append(_)  
 
-        for element in path_list: print('\n' + element)
-        
-
+    
         return path_list
 
+
+def element_scroller(max,min,user_input,in_home,path_list):
+    
+    if user_input.upper() == 'B':
+
+        if in_home:
+            print("\nAlready in home directory!")
+
+        elif not in_home:
+            os.chdir('..')
+            print('\nMoved back a directory!')
+            max = 5
+            min = 0  
+
+    elif user_input.upper() == 'N':
+        max += 5
+        min += 5
+
+    elif user_input.upper() == 'P': 
+
+        if max == 5 and min == 0:
+
+            print('\nAlready in first page!')
+
+        else:
+
+            max -= 5
+            min -= 5
+    
+    elif user_input.upper() == 'C': 
+
+        while True:
+
+            user_input = input('\nEnter path name here: ')
+
+            if user_input in path_list: # change directory
+
+                
+                os.chdir(os.getcwd() + '\\' + user_input) # moves to a new directory (from user input)
+
+                print('\nDirectory has been changed!')
+
+                max = 5
+                min = 0  
+                break
+
+            else:
+
+                print('\nNo such path!')   
 
 
 

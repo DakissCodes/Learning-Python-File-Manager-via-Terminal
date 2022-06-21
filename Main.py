@@ -21,8 +21,9 @@ while True:
         file_name = input("Enter file name: ") # name of the folder
 
         
-
-       
+        max = 5
+        min = 0      
+        
         while user_input != '0':
 
             in_home = True
@@ -31,8 +32,24 @@ while True:
 
 
             path_list = logic.list_directory(True) # list of paths in current directory, and current directory paths
+            # path list is the list of folders/files in a directory! 
 
-            user_input = Classes.create_file_input(in_home) 
+            if len(path_list) <= 5:
+                for element in path_list[::]: print('\n' + element)
+
+
+            else:
+
+                if len(path_list[min:max]) == 0: 
+                    print('\nNo more items! ')
+                    max -= 5
+                    min -= 5
+        
+                for element in path_list[min:max]: print('\n' + element)
+
+
+
+            user_input = Classes.create_file_input(in_home) # edit this!
             
             if user_input == '': # create file in current directory 
                 
@@ -43,25 +60,57 @@ while True:
                 
                 break
 
-            if not in_home and user_input == '1':
-                os.chdir('..')
-                print('\nMoved back a directory!')
+            if user_input.upper() == 'B':
 
-            else: # move directories
+                if in_home:
+                    print("\nAlready in home directory!")
 
-                if user_input in path_list: # change directory
+                elif not in_home:
+                    os.chdir('..')
+                    print('\nMoved back a directory!')
+                    max = 5
+                    min = 0  
 
-                    
-                    os.chdir(os.getcwd() + '\\' + user_input) # moves to a new directory (from user input)
+            elif user_input.upper() == 'N':
+                max += 5
+                min += 5
 
-                    print('\nDirectory has been changed!')
+            elif user_input.upper() == 'P': 
+
+                if max == 5 and min == 0:
+
+                    print('\nAlready in first page!')
 
                 else:
-                    print('No such path!')
+
+                    max -= 5
+                    min -= 5
+            
+            elif user_input.upper() == 'C': 
+
+                while True:
+
+                    user_input = input('\nEnter path name here: ')
+
+                    if user_input in path_list: # change directory
+
+                        
+                        os.chdir(os.getcwd() + '\\' + user_input) # moves to a new directory (from user input)
+
+                        print('\nDirectory has been changed!')
+
+                        max = 5
+                        min = 0  
+                        break
+
+                    else:
+
+                        print('\nNo such path!')                
 
         os.chdir('C:\\Users\\ASUS')
 
     elif user_input == 2: # move folders/file
+
         file_list = [] # files to move 
 
         while True:
@@ -84,6 +133,8 @@ while True:
                     
                     path_list = logic.list_directory(False) # displays all files and folders
 
+                    
+
                     user = input('\n[0] Exit\nEnter file name: ')
 
                     if user == '0': 
@@ -91,6 +142,7 @@ while True:
                     
                     elif user in path_list: 
                         file_list.append(user)
+                        print('\nFile has been added!')
                     
                     else:
                          print('\nNo such file/folder!')
@@ -143,6 +195,7 @@ while True:
                         shutil.move(os.getcwd() + '\\' + element,os.curdir())
 
 
+
                 
 
 
@@ -153,6 +206,7 @@ while True:
 
 
 
+            ''' provide another prompt to let you enter a path name '''
  #
                 #
 #
@@ -169,8 +223,15 @@ while True:
     BUG: When returning to interface, go back to home directory (C:\\Users\\ASUS)
     BUG: Remove a file from the list once selected ( in moving files )
     Imporvements:
-    - Better way to display the directories 
+    - Better way to display the directories ( Scrolling through pages! )
+
+    BUG: In moving files, after moving a directory, moving files still in home directory
+
+
     '''
+
+
+
 
 
 
