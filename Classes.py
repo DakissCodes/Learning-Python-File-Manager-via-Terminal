@@ -20,9 +20,9 @@ def create_file_input(bool):
 
 def move_interface():
 
-    user = input('\n[0] Exit\n[1] Choose Files in Current Directory\n[2] Change Directory\n[3] Move Files\nENTER HERE: ')
+    user = input('\n[B] Go Back a Directory\n[N] Next Page\n[P] Previous Page\n\n[0] Exit\n[1] Choose Files/Folders\n[2] Change Directory\n[3] Move Files\nENTER HERE: ')
 
-    return int(user)
+    return user
 
 def move_change_dir(bool): 
     if not bool:
@@ -51,6 +51,70 @@ class directory:
     def __init__(self):
  
         self.path = os.getcwd() # sets a parent directory 
+
+        self.max_index = 5
+        self.min_index = 0
+
+    def element_scroller(self,user_input,in_home,path_list): # element displayer and scroller
+        
+        
+        if user_input.upper() == 'B':
+
+            if in_home:
+                print("\nAlready in home directory!")
+                return self.max_index,self.min_index
+
+            elif not in_home:
+                os.chdir('..')
+                print('\nMoved back a directory!')
+
+                self.self.max_index_index = 5
+                self.min_index = 0  
+
+                return self.max_index,self.min_index
+
+        elif user_input.upper() == 'N':
+
+            self.max_index += 5
+            self.min_index += 5
+            return self.max_index,self.min_index
+
+
+        elif user_input.upper() == 'P': 
+
+            if self.max_index == 5 and self.min_index == 0:
+
+                print('\nAlready in first page!')
+                return self.max_index,self.min_index
+
+            else:
+
+                self.max_index -= 5
+                self.min_index -= 5
+                return self.max_index,self.min_index
+        
+        elif user_input.upper() == 'C': 
+
+            while True:
+
+                user_input = input('\nEnter path name here: ')
+
+                if user_input in path_list: # change directory
+
+                    
+                    os.chdir(os.getcwd() + '\\' + user_input) # moves to a new directory (from user input)
+
+                    print('\nDirectory has been changed!')
+
+                    self.max_index = 5
+                    self.min_index = 0 
+                    return self.max_index,self.min_index
+
+                else:
+
+                    print('\nNo such path!')   
+        
+        
 
 
 
@@ -84,55 +148,21 @@ class directory:
         return path_list
 
 
-def element_scroller(max,min,user_input,in_home,path_list):
-    
-    if user_input.upper() == 'B':
 
-        if in_home:
-            print("\nAlready in home directory!")
 
-        elif not in_home:
-            os.chdir('..')
-            print('\nMoved back a directory!')
-            max = 5
-            min = 0  
+    def element_displayer(self,path_list):
+        if len(path_list) <= 5:
 
-    elif user_input.upper() == 'N':
-        max += 5
-        min += 5
-
-    elif user_input.upper() == 'P': 
-
-        if max == 5 and min == 0:
-
-            print('\nAlready in first page!')
+            for element in path_list[::]: print('\n' + element)
 
         else:
 
-            max -= 5
-            min -= 5
-    
-    elif user_input.upper() == 'C': 
+            if len(path_list[self.min_index:self.max_index]) == 0: 
+                print('\nNo more items! ')
+                self.max_index -= 5
+                self.min_index -= 5     
 
-        while True:
-
-            user_input = input('\nEnter path name here: ')
-
-            if user_input in path_list: # change directory
-
-                
-                os.chdir(os.getcwd() + '\\' + user_input) # moves to a new directory (from user input)
-
-                print('\nDirectory has been changed!')
-
-                max = 5
-                min = 0  
-                break
-
-            else:
-
-                print('\nNo such path!')   
-
+            for element in path_list[self.min_index:self.max_index]: print('\n' + element)
 
 
 

@@ -20,11 +20,10 @@ while True:
 
         file_name = input("Enter file name: ") # name of the folder
 
+        logic.max_index = 5
+        logic.min_index = 0   
         
-        max = 5
-        min = 0      
-        
-        while user_input != '0':
+        while True:
 
             in_home = True
 
@@ -35,21 +34,24 @@ while True:
             # path list is the list of folders/files in a directory! 
 
             if len(path_list) <= 5:
+
                 for element in path_list[::]: print('\n' + element)
 
 
             else:
 
-                if len(path_list[min:max]) == 0: 
+                if len(path_list[logic.min_index:logic.max_index]) == 0: 
                     print('\nNo more items! ')
-                    max -= 5
-                    min -= 5
+                    logic.max_index -= 5
+                    logic.min_index -= 5
         
-                for element in path_list[min:max]: print('\n' + element)
+                for element in path_list[logic.min_index:logic.max_index]: print('\n' + element)
 
 
 
             user_input = Classes.create_file_input(in_home) # edit this!
+            if user_input == '0':
+                break
             
             if user_input == '': # create file in current directory 
                 
@@ -59,53 +61,11 @@ while True:
                 print('\nFolder successfully created!')
                 
                 break
-
-            if user_input.upper() == 'B':
-
-                if in_home:
-                    print("\nAlready in home directory!")
-
-                elif not in_home:
-                    os.chdir('..')
-                    print('\nMoved back a directory!')
-                    max = 5
-                    min = 0  
-
-            elif user_input.upper() == 'N':
-                max += 5
-                min += 5
-
-            elif user_input.upper() == 'P': 
-
-                if max == 5 and min == 0:
-
-                    print('\nAlready in first page!')
-
-                else:
-
-                    max -= 5
-                    min -= 5
             
-            elif user_input.upper() == 'C': 
+            logic.element_scroller(user_input,in_home,path_list)
 
-                while True:
 
-                    user_input = input('\nEnter path name here: ')
 
-                    if user_input in path_list: # change directory
-
-                        
-                        os.chdir(os.getcwd() + '\\' + user_input) # moves to a new directory (from user input)
-
-                        print('\nDirectory has been changed!')
-
-                        max = 5
-                        min = 0  
-                        break
-
-                    else:
-
-                        print('\nNo such path!')                
 
         os.chdir('C:\\Users\\ASUS')
 
@@ -113,41 +73,58 @@ while True:
 
         file_list = [] # files to move 
 
+        logic.max_index = 5
+        logic.min_index = 0   
+        
         while True:
 
+            in_home = True
+            if os.getcwd() != 'C:\\Users\\ASUS': in_home = False # checks if in home directory
 
-            print('Current Directory: ' + os.getcwd())
+            path_list = logic.list_directory(False) # displays both files and folders
+
+            logic.element_displayer(path_list)
 
             print(file_list) # shows files to move
 
+
+
             user_input = Classes.move_interface() # user interface
 
-            if user_input == 0:
+            logic.element_scroller(user_input,in_home,path_list)
+        
+            if user_input == '0':
                 break
 
-            elif user_input == 1: # choose files in current directory
-                
 
+
+
+
+
+            elif user_input == '1': # choose files in current directory
                 
                 while True: # while user does not input 0
-                    
                     path_list = logic.list_directory(False) # displays all files and folders
+                    logic.element_displayer(path_list)
 
+                    user_input = input('\n[0] Exit\n[N] Next Page\n[P] Previous Page\n\nEnter file name: ')
                     
-
-                    user = input('\n[0] Exit\nEnter file name: ')
-
-                    if user == '0': 
+                    logic.element_scroller(user_input,None,path_list)
+                    if user_input == '0': 
                         break
                     
-                    elif user in path_list: 
-                        file_list.append(user)
+                    elif user_input in path_list: 
+                        file_list.append(user_input)
                         print('\nFile has been added!')
                     
                     else:
                          print('\nNo such file/folder!')
 
-            elif user_input == 2: # change directory
+
+
+
+
+            elif user_input == '2': # change directory
             
                 while True: 
 
@@ -180,7 +157,7 @@ while True:
                             print('No such path!')
 
 
-            elif user_input == 3: # move all files/folders in os.cwd()
+            elif user_input == '3': # move all files/folders in os.cwd()
 
                 if len(file_list) == 0:
                     print('\nFile list is empty!')
@@ -224,7 +201,7 @@ while True:
     BUG: Remove a file from the list once selected ( in moving files )
     Imporvements:
     - Better way to display the directories ( Scrolling through pages! )
-
+    - Intialize max, min in class 
     BUG: In moving files, after moving a directory, moving files still in home directory
 
 
