@@ -92,9 +92,7 @@ while True:
     elif user_input == 2: # move folders/file
 
         file_list = [] # files to move 
-
-        logic.max_index = 5
-        logic.min_index = 0   
+ 
         
         while True:
             os.system('cls')
@@ -102,29 +100,11 @@ while True:
             in_home = True
             if os.getcwd() != 'C:\\Users\\ASUS': in_home = False # checks if in home directory
 
-            logic.list_directory(False) # displays both files and folders
-
-            logic.element_displayer()
-
             print('\nFILES TO MOVE: ')
             print(file_list) # shows files to move
 
             user_input = Classes.move_interface() # user interface]
 
-            if user_input.upper() == 'B':
-
-                if in_home:
-                    print("\nAlready in home directory!")
-
-                elif not in_home:
-                    os.chdir('..')
-                    print('\nMoved back a directory!')
-
-                    logic.max_index = 5
-                    logic.min_index = 0              
-
-            logic.element_scroller(user_input)
-        
             if user_input == '0':
                 break
 
@@ -138,11 +118,12 @@ while True:
                 logic.list_directory(False)
 
                 while True: # while user does not input 0
+                    os.system('cls')
                     logic.element_displayer()
 
-                    user_input = input('\n[0] Exit\nEnter file name: ')
+                    user_input = input('\n[0] Exit\n[N] Next Page\n[P] Previous Page\n\nEnter file name: ')
                     
-
+                    logic.element_scroller(user_input)
                     if user_input == '0': 
                         break
                     
@@ -188,9 +169,9 @@ while True:
                         logic.list_directory(True)
 
                         logic.element_displayer()
-                        print('\n')
+                        
                         print(os.getcwd())
-                        user_input = input('\n[0] Exit\n[N] Next Page\n[P] Previous Page\n[M] Move Here\n\nEnt ')
+                        user_input = input('\n[0] Exit\n[N] Next Page\n[P] Previous Page\n[M] Move Here\n\nEnter path name: ')
 
                         if user_input == '0':
                             break
@@ -231,15 +212,12 @@ while True:
 
 
 
-''' BUG: Cannot create a folder that already exists!
-    BUG: When returning to interface, go back to home directory (C:\\Users\\ASUS)
+''' 
     BUG: Remove a file from the list once selected ( in moving files )
-    Imporvements:
-    - Better way to display the directories ( Scrolling through pages! )
-    - Intialize max, min in class 
+
     BUG: In moving files, after moving a directory, moving files still in home directory
 
-
+    BUG: Removing the file from the list after selection
     '''
 
 
